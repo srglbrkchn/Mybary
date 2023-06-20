@@ -81,15 +81,15 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   let author;
   try {
-    const author = await Author.findById(req.params.id);
+    author = await Author.findById(req.params.id);
     await author.deleteOne();
     res.redirect("/authors");
   } catch (err) {
     console.log(err);
     if (author == null) {
       res.redirect("/");
-    } else {
-      res.redirect(`/authors/${author.id}`);
+    } else if (err) {
+      res.redirect(`/authors/${author._id}`);
     }
   }
 });

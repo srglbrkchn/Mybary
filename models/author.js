@@ -9,11 +9,11 @@ const authorSchema = new mongoose.Schema({
   },
 });
 
-authorSchema.pre("deleteOne", { document: true }, async function (next) {
+authorSchema.pre("deleteOne", { document: true }, async function (next, err) {
   try {
     const books = await Book.find({ author: this.id });
     if (books.length > 0) {
-      throw new Error("This author has books still");
+      next(new Error("This author has books still"));
     } else {
       next();
     }
